@@ -2,6 +2,8 @@
 
 Jest matcher to check if your frontend matches the design.
 
+[![Demo](./docs/screencast.png)](https://twitter.com/i/status/1263899580946681862)
+
 ## Installation
 
 With npm:
