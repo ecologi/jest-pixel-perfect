@@ -40,6 +40,12 @@ test('is pixel perfect', async () => {
 });
 ```
 
+You can pass different argument to `toBePixelPerfect`:
+
+- a URL to a frame in a Figma file
+- a path to a local PNG file
+- a Buffer
+
 ## Setup
 
 ### Jest >v24

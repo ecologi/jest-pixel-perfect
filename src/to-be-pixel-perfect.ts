@@ -96,7 +96,7 @@ Diff     ${diffPath}`,
 export async function toBePixelPerfect(
   this: JestMatcher,
   received: unknown,
-  expected: string,
+  expected: string | Buffer,
   configuration?: JestPixelPerfectConfiguration,
 ): Promise<MatcherResult> {
   const resolvedConfiguration = getMergedConfiguration(configuration);
@@ -118,11 +118,13 @@ export async function toBePixelPerfect(
     );
   }
 
-  if (typeof expected !== 'string') {
+  if (typeof expected !== 'string' && !Buffer.isBuffer(expected)) {
     throw new Error(
       this.utils.matcherErrorMessage(
         this.utils.matcherHint(matcherString, undefined, undefined, this),
-        `${this.utils.EXPECTED_COLOR('expected')} value must be a string`,
+        `${this.utils.EXPECTED_COLOR(
+          'expected',
+        )} value must be a string or a Buffer`,
         this.utils.printWithType(
           'Expected',
           expected,
@@ -134,11 +136,14 @@ export async function toBePixelPerfect(
 
   const receivedImage = PNG.sync.read(received);
 
-  let expectedBuffer: Buffer | undefined = undefined;
+  let expectedBuffer: Buffer | undefined = Buffer.isBuffer(expected)
+    ? expected
+    : undefined;
 
   if (
-    expected.startsWith('https://www.figma.com') ||
-    expected.startsWith('https://figma.com')
+    typeof expected === 'string' &&
+    (expected.startsWith('https://www.figma.com') ||
+      expected.startsWith('https://figma.com'))
   ) {
     if (!resolvedConfiguration.figmaToken) {
       throw new Error(
@@ -165,6 +170,12 @@ export async function toBePixelPerfect(
       },
     );
   }
+
+  try {
+    if (typeof expected === 'string' && fs.existsSync(expected)) {
+      expectedBuffer = await fs.promises.readFile(expected);
+    }
+  } catch (err) {}
 
   if (!expectedBuffer) {
     throw new Error(
