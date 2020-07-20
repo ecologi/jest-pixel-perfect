@@ -32,10 +32,15 @@ test('Should fail with a different file', async () => {
   const image = await fs.promises.readFile(
     path.join(__dirname, './fixtures/wrong.png'),
   );
-  await expect(
-    image,
-  ).toBePixelPerfect(
-    'https://www.figma.com/file/S2ukcXYvojo86oMu1tI9pt/Test-2-Colors?node-id=20%3A2',
-    { alwaysReport: true, figmaToken },
-  );
+  try {
+    await expect(
+      image,
+    ).toBePixelPerfect(
+      'https://www.figma.com/file/S2ukcXYvojo86oMu1tI9pt/Test-2-Colors?node-id=20%3A2',
+      { alwaysReport: true, figmaToken },
+    );
+    expect(1).toBe(2);
+  } catch (err) {
+    expect(1).toBe(1);
+  }
 }, 10000);

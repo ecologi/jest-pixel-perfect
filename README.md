@@ -43,6 +43,7 @@ test('is pixel perfect', async () => {
 You can pass different argument to `toBePixelPerfect`:
 
 - a URL to a frame in a Figma file
+- a URL to a frame in an XD file
 - a path to a local PNG file
 - a Buffer
 
@@ -97,6 +98,7 @@ require('any other test framework libraries you are using');
 
 setDefaultConfiguration({
   figmaToken: process.env.FIGMA_TOKEN,
+  xdToken: process.env.XD_TOKEN,
 });
 ```
 

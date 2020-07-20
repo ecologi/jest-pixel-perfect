@@ -5,6 +5,7 @@ import { PNG, PNGWithMetadata } from 'pngjs';
 import { JestMatcher, MatcherResult } from './jest-matcher';
 import chalk from 'chalk';
 import { fetchFigma } from './figma';
+import { fetchXD } from './xd';
 import {
   JestPixelPerfectConfiguration,
   getMergedConfiguration,
@@ -169,6 +170,32 @@ export async function toBePixelPerfect(
         height: receivedImage.height,
       },
     );
+  }
+
+  if (
+    typeof expected === 'string' &&
+    expected.startsWith('https://xd.adobe.com')
+  ) {
+    if (!resolvedConfiguration.xdToken) {
+      throw new Error(
+        this.utils.matcherErrorMessage(
+          this.utils.matcherHint(matcherString, undefined, undefined, this),
+          `${this.utils.EXPECTED_COLOR(
+            'configuration.xdToken',
+          )} value must be an non empty string`,
+          this.utils.printWithType(
+            'Expected',
+            resolvedConfiguration.figmaToken,
+            this.utils.printExpected,
+          ),
+        ),
+      );
+    }
+
+    expectedBuffer = await fetchXD(expected, resolvedConfiguration.xdToken, {
+      width: receivedImage.width,
+      height: receivedImage.height,
+    });
   }
 
   try {

@@ -1,6 +1,6 @@
 {
   "name": "jest-pixel-perfect",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Jest matcher to check if your frontend matches the design",
   "main": "lib/index.js",
   "scripts": {

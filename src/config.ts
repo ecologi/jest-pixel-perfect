@@ -29,6 +29,7 @@ export interface JestPixelPerfectConfiguration {
   alwaysReport?: boolean;
 
   figmaToken?: string;
+  xdToken?: string;
 }
 
 const defaultConfigTemplate: JestPixelPerfectConfiguration = {
